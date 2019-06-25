@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Meatball Shower</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+        const print = console.log;
+
+
+        let gameState = (function () {
+            // Game state variable: Training 0, Game 1, Game over 2
+            const game = Object.freeze({
+                trainingModel: "trainingModel",
+                gamePlay: "gamePlay",
+                gameOver: "gameOver"
+            });
+
+
+            // The game starts with a undefined state.
+            let currentState;
+            const eventEmitter = document.createElement("div")
+
+
+            const
+                onTraining = new Event(game.trainingModel),
+                onGamePlay = new Event(game.gamePlay),
+                onGameOver = new Event(game.gameOver);
+
+            // Demo code to show how the event working
+            setInterval(() => eventEmitter.dispatchEvent(onTraining), 1000);
+
+            // All the available states of the current game.
+            const states = {
+                onTraining: onTraining.type,
+                onGamePlay: onGamePlay.type,
+                onGameOver: onGameOver.type
+            };
+
+            function onChange(changedTo, fn) {
+                // Listen for the event.
+                eventEmitter.addEventListener(changedTo, fn, false);
+            }
+
+            // @Todo attach the game state value to the events
+
+            return {
+                get: () => gameState,
+                set(state) {
+                    if (!game[state])
+                        return false;
+                    gameState = state;
+                    return true;
+                },
+                onChange,
+                states,
+                onTraining: (fn) => onChange(states.onTraining, fn),
+                onGamePlay: (fn) => onChange(states.onGamePlay, fn),
+                onGameOver: (fn) => onChange(states.onGameOver, fn)
+            };
+        })();
+
+        gameState.onChange(gameState.states.onTraining, function (event) {
+            print("training callback by onChange")
+        });
+
+        gameState.onTraining(() => print("training callback by onTraining"));
+    </script>
+</head>
+
+<body>
+    <div>
+        <h2 id='info'></h2>
+    </div>
+</body>
+
+</html>
