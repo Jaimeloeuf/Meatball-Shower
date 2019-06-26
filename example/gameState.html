@@ -26,46 +26,33 @@
         */
         const print = console.log;
 
-        // State control / Reactive Controller in the MVC architects
+        // State control / Reactive Controller in the MVC architects built on top of a EventBus object
         const Game = (function () {
-            // const states = ["trainingModel", "gamePlay", "gameOver"];
+            const eventBus = EventBus(["trainingModel", "gamePlay", "gameOver"]);
 
-            // This should be built on top of the eventbus system, instead of creating the this,
-            // at the start of the event bus creation, it should create an object that is exactly like this, so
-            // states will just be
-            // const states = eventBus.events
-
-            const states = {
-                trainingModel: "trainingModel",
-                gamePlay: "gamePlay",
-                gameOver: "gameOver"
-            };
-
-            // Get keys of states object as String array to use it to create a Event Bus
-            const eventBus = EventBus(Object.keys(states));
+            const states = eventBus.events
 
             // The game starts with a undefined state.
             let currentState;
 
-            // Set method is essentially a function wrapping over the original fire method from eventBus
-            // Setter method to set the value of the current state.
+            // Set method for the current state is a function wrapper over the eventBus's fire method.
             function set(state) {
-                // Exit method, if the game state is invalid
-                if (!states[state])
-                    return false;
+                try {
+                    // If the game state is invalid, the event does not exist, causing error thrown.
+                    eventBus.fire(state);
 
-                // If gameState is valid, update state
-                currentState = state;
-
-                eventBus.fire(eventBus.events[state]);
-
-                // Return true to indicate operation success while ending function
-                return true;
+                    // If gameState is valid, update state
+                    currentState = state;
+                } catch (err) {
+                    // Catch the error to re throw a more specific error regarding invalid game state
+                    throw new Error(`Invalid game state used: ${state}`);
+                }
             }
 
             // Return the gameState object
             return Object.freeze({
-                getState: () => currentState,
+                // Getter method, with a check to prevent accessing property of undefined.
+                getState: () => (currentState) ? currentState.type : currentState,
                 set,
                 states,
                 // Below are abbrevations / shorthand methods for attaching event handlers
@@ -75,10 +62,13 @@
             });
         })();
 
+        print(Game.getState());
+
         Game.onTraining(() => print("on training callback by onTraining"))
 
         Game.set(Game.states.trainingModel);
 
+        print(Game.getState());
     </script>
 </head>
 
