@@ -80,22 +80,3 @@ function EventBus(event_names = []) {
         onChange
     };
 }
-
-
-// Test function to demo the use of the EventBus factory function.
-function test() {
-    // Utility function binding / Function alias
-    const print = console.log;
-
-    const bus = EventBus(["training", "play"]);
-    print(bus.events)
-    bus.addEvents(["test", "hip hop"])
-    print(bus.events)
-    bus.on.training(() => print("TP"))
-    bus.on.test(() => print("test tp"))
-
-    setInterval(() => {
-        bus.fire(bus.events.training)
-        bus.fire(bus.events.test)
-    }, 1000);
-}
