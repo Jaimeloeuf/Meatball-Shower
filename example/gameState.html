@@ -2,79 +2,88 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Meatball Shower</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../events.js"></script>
 
     <script>
+        /*  @Doc
+            const game controls the game through changes of the game's state with reactive programming
+            Created through an anonymous self-invoking function to use the function's closure.
+            Self-invoking so that it is a singleton.
+        
+            
+            @Defn  Variable definitions in this scope
+            states:
+                - Contains all the possible states of the game
+            currentState:
+                - Variable that keeps track of the current state of the game.
+
+            @ Use case specification:
+            user should be able to :
+            - (Done) read the current state
+            - set a new state
+            - add a event handler for a change of state.
+            - ? remove a event handler previously added
+        */
         const print = console.log;
 
+        // State control / Reactive Controller in the MVC architects
+        const Game = (function () {
+            // const states = ["trainingModel", "gamePlay", "gameOver"];
 
-        let gameState = (function () {
-            // Game state variable: Training 0, Game 1, Game over 2
-            const game = Object.freeze({
+            // This should be built on top of the eventbus system, instead of creating the this,
+            // at the start of the event bus creation, it should create an object that is exactly like this, so
+            // states will just be
+            // const states = eventBus.events
+
+            const states = {
                 trainingModel: "trainingModel",
                 gamePlay: "gamePlay",
                 gameOver: "gameOver"
-            });
+            };
 
+            // Get keys of states object as String array to use it to create a Event Bus
+            const eventBus = EventBus(Object.keys(states));
 
             // The game starts with a undefined state.
             let currentState;
-            const eventEmitter = document.createElement("div")
 
+            // Set method is essentially a function wrapping over the original fire method from eventBus
+            // Setter method to set the value of the current state.
+            function set(state) {
+                // Exit method, if the game state is invalid
+                if (!states[state])
+                    return false;
 
-            const
-                onTraining = new Event(game.trainingModel),
-                onGamePlay = new Event(game.gamePlay),
-                onGameOver = new Event(game.gameOver);
+                // If gameState is valid, update state
+                currentState = state;
 
-            // Demo code to show how the event working
-            setInterval(() => eventEmitter.dispatchEvent(onTraining), 1000);
+                eventBus.fire(eventBus.events[state]);
 
-            // All the available states of the current game.
-            const states = {
-                onTraining: onTraining.type,
-                onGamePlay: onGamePlay.type,
-                onGameOver: onGameOver.type
-            };
-
-            function onChange(changedTo, fn) {
-                // Listen for the event.
-                eventEmitter.addEventListener(changedTo, fn, false);
+                // Return true to indicate operation success while ending function
+                return true;
             }
 
-            // @Todo attach the game state value to the events
-
-            return {
-                get: () => gameState,
-                set(state) {
-                    if (!game[state])
-                        return false;
-                    gameState = state;
-                    return true;
-                },
-                onChange,
+            // Return the gameState object
+            return Object.freeze({
+                getState: () => currentState,
+                set,
                 states,
-                onTraining: (fn) => onChange(states.onTraining, fn),
-                onGamePlay: (fn) => onChange(states.onGamePlay, fn),
-                onGameOver: (fn) => onChange(states.onGameOver, fn)
-            };
+                // Below are abbrevations / shorthand methods for attaching event handlers
+                onTraining: eventBus.on.trainingModel,
+                onGamePlay: eventBus.on.gamePlay,
+                onGameOver: eventBus.on.gameOver
+            });
         })();
 
-        gameState.onChange(gameState.states.onTraining, function (event) {
-            print("training callback by onChange")
-        });
+        Game.onTraining(() => print("on training callback by onTraining"))
 
-        gameState.onTraining(() => print("training callback by onTraining"));
+        Game.set(Game.states.trainingModel);
+
     </script>
 </head>
 
 <body>
-    <div>
-        <h2 id='info'></h2>
-    </div>
+    <h1>Game Controller Test</h1>
 </body>
 
 </html>
