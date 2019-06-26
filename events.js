@@ -5,6 +5,8 @@
     a enclosed event bus system.    
 
     @Todo
+    - Clean up the codes
+    - Add remove event listener method
     - Create a lib for this event bus
 */
 
@@ -50,6 +52,7 @@ function EventBus(event_names = []) {
         if (!_events[event.type])
             return; // Throw an error instead.
         // Move check up to beore firing event.
+        // Can try to check with the _getEvent method
     }
 
     const _getEvent = (event_name) => _events[event_name];
@@ -72,11 +75,12 @@ function EventBus(event_names = []) {
 
     // Construct and return the EventBus object
     return {
+        event_names,
         events: _events,
+        on: _event_handlers,
+        onChange,
         addEvent,
         addEvents,
-        fire,
-        on: _event_handlers,
-        onChange
+        fire
     };
 }
