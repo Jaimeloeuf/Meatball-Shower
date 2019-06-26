@@ -44,7 +44,7 @@ function EventBus(event_names = []) {
         else if (typeof event === "object")
             eventEmitter.dispatchEvent(event);
         else
-            return new Error("Invalid event type");
+            throw new Error(`Invalid event type: "${typeof event}" used`);
 
         // If the event's is not valid, exit function
         if (!_events[event.type])
