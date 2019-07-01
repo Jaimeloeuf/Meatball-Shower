@@ -72,6 +72,11 @@ class Meatball {
     }
 }
 
+function collision_detector(meatball, sauce) {
+    const d2 = sq(sauce.position - meatball.position.x) + sq(height - sauce.size - meatball.position.y);
+    const threshold = sq(sauce.size * 0.5) + sq(meatball.size * 0.5);
+    return (d2 < threshold);
+}
 
 class Star {
     constructor() {
