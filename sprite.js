@@ -6,6 +6,31 @@
     - Sauce
 */
 
+class Sauce {
+    constructor() {
+        this.position = width / 2;
+        this.velocity = 0;
+        this.maxVelocity = 8;
+        this.friction = 0.75;
+        this.size = 50;
+        this.speed = 5;
+    }
+
+    show() {
+        stroke(20);
+        strokeWeight(4);
+        fill(255, 0, 0);
+        ellipse(this.position, height - this.size, this.size);
+    }
+
+    update() {
+        this.position += this.velocity;
+        this.position = constrain(this.position, this.size, width - this.size);
+        this.velocity += currentPrediction * this.speed;
+        this.velocity *= this.friction;
+        this.velocity = constrain(this.velocity, -this.maxVelocity, this.maxVelocity);
+    }
+}
 
 class Meatball {
     constructor() {
@@ -43,6 +68,35 @@ class Meatball {
             this.size = random(50, 120);
             this.position = createVector(random(this.size / 2, width - this.size / 2), -this.size);
             this.velocity = createVector(random(-3, 3), random(1, 3));
+        }
+    }
+}
+
+
+class Star {
+    constructor() {
+        this.position = createVector(random(width), random(height));
+        this.velocity = random(1, 5);
+        this.color = random(50, 255);
+    }
+
+    show() {
+        // Sets the color and line weight used to draw lines and borders around shapes.
+        stroke(this.color, this.color, 255);
+        strokeWeight(1);
+
+        // Draws a one pixel coordinate point in space.
+        // First parameter is X value of the point and the second value is the Y value for the point.
+        // The color of the point is determined by the current stroke, which is set above.
+        point(this.position.x, this.position.y);
+    }
+
+    update() {
+        this.position.y += this.velocity;
+        if (this.position.y > height) {
+            this.position = createVector(random(width), 0);
+            this.velocity = random(1, 5);
+            this.color = random(50, 255);
         }
     }
 }
