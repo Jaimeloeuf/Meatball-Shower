@@ -70,6 +70,15 @@ function setup() {
 }
 
 
+// videoOut function takes a video input stream to output it onto the p5 canvas
+function videoOut(video_input) {
+    // Show mirror image of webcam
+    translate(width, 0);
+    scale(-1.0, 1.0);
+    image(video_input, 0, 0, width, height);
+}
+
+
 // Function to show all the buttons
 function showBtns() {
     select('#info').html('Add images you wish to correspond to relevant movements. Press train when done.');
