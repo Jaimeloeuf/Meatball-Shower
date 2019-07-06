@@ -1,9 +1,15 @@
 'use strict'; // Enforce use of strict verion of JavaScript
 
 /*  @Doc
-    const game controls the game through changes of the game's state with reactive programming
-    Created through an anonymous self-invoking function to use the function's closure.
-    Self-invoking so that it is a singleton.
+    This module implements the Game controller, which is basically a State and Business logic controller,
+    built on a Reactive programming layer provided by a EventBus object.
+
+    It is created through an anonymous self-invoking function to use the function's closure.
+    Self-invoking to create a singleton object, to ensure that there is only 1 Game controller.
+
+    Built on top of a EventBus object which implements all the low level events and their event handling,
+    thus Game controller is very application specific, keeping it clean and simple,
+    providing users with method that wraps over all the EventBus usage.
 
     
     @Defn  Variable definitions in this scope
@@ -20,7 +26,6 @@
     - ? remove a event handler previously added
 */
 
-// State control / Reactive Controller in the MVC architects built on top of a EventBus object
 const Game = (function () {
     const eventBus = EventBus(["trainingModel", "gamePlay", "gameOver"]);
 
@@ -47,8 +52,10 @@ const Game = (function () {
     return Object.freeze({
         // Getter method, with a check to prevent accessing property of undefined.
         getState: () => (currentState) ? currentState.type : currentState,
-        set,
-        states,
+        // Below are abbrevations / shorthand methods for setting/changing state
+        trainModel: () => set(states.trainingModel),
+        startGame: () => set(states.gamePlay),
+        endGame: () => set(states.gameOver),
         // Below are abbrevations / shorthand methods for attaching event handlers
         onTraining: eventBus.on.trainingModel,
         onGamePlay: eventBus.on.gamePlay,
