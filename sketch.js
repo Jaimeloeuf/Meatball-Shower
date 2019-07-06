@@ -67,6 +67,9 @@ function setup() {
             // console.log(loss);
         });
     });
+
+    // Set curent gameState to training model
+    changeState(0);
 }
 
 
@@ -76,6 +79,15 @@ function videoOut(video_input) {
     translate(width, 0);
     scale(-1.0, 1.0);
     image(video_input, 0, 0, width, height);
+}
+
+
+// Function to be called by the p5.js library when a key is pressed.
+function keyPressed() {
+    // The variable "key" is populated by p5.js to be the most recently typed key.
+    // Run the game again, if game has ended and user pressed space bar to continue.
+    if (key === ' ' && gameState === 2)
+        changeState(1); // @Tmp  To start game
 }
 
 
