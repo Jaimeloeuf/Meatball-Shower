@@ -42,10 +42,24 @@ const Game = (function () {
 
             // If gameState is valid, update state
             currentState = state;
+
+            // Print out the current state for debug
+            console.log(`Current Game state: ${state.type}`);
         } catch (err) {
             // Catch the error to re throw a more specific error regarding invalid game state
             throw new Error(`Invalid game state used: ${state}`);
         }
+    }
+
+    // Function called repeatedly to draw screen on the canvas
+    let currentScreenDrawer;
+
+    function setScreenDrawer(fn) {
+        currentScreenDrawer = fn;
+    }
+
+    function draw() {
+        currentScreenDrawer();
     }
 
     // Return the gameState object
@@ -59,6 +73,9 @@ const Game = (function () {
         // Below are abbrevations / shorthand methods for attaching event handlers
         onTraining: eventBus.on.trainingModel,
         onGamePlay: eventBus.on.gamePlay,
-        onGameOver: eventBus.on.gameOver
+        onGameOver: eventBus.on.gameOver,
+        // Export the methods for drawing
+        setScreenDrawer,
+        draw
     });
 })();
