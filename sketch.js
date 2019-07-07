@@ -13,6 +13,8 @@ let dodged;
 let hiScore = 0;
 let sauce, meatballs, stars;
 
+// Utility function binding
+const print = console.log;
 
 function setup() {
     // Create a p5.js canvas and inject it into the canvas container in the HTML
@@ -33,40 +35,49 @@ function setup() {
     regressor = mobileNet.regression(video, () => console.log('Model ready'));
 
 
-    // Buttons
-    const buttonDiv = select('#buttons');
+    function CreateButtons() {
+        // Buttons
+        const buttonDiv = select('#buttons');
 
-    leftButton = createButton('Move left');
-    leftButton.parent(buttonDiv);
-    leftButton.mouseClicked(() => regressor.addImage(-1));
+        leftButton = createButton('Move left');
+        leftButton.parent(buttonDiv);
+        leftButton.mouseClicked(() => regressor.addImage(-1));
 
-    centerButton = createButton('No movement');
-    centerButton.parent(buttonDiv);
-    centerButton.mouseClicked(() => regressor.addImage(0));
+        centerButton = createButton('No movement');
+        centerButton.parent(buttonDiv);
+        centerButton.mouseClicked(() => regressor.addImage(0));
 
-    rightButton = createButton('Move right');
-    rightButton.parent(buttonDiv);
-    rightButton.mouseClicked(() => regressor.addImage(1));
+        rightButton = createButton('Move right');
+        rightButton.parent(buttonDiv);
+        rightButton.mouseClicked(() => regressor.addImage(1));
 
-    trainButton = createButton('Train');
-    select('#train').child(trainButton);
-    trainButton.mouseClicked(() => {
-        select('#info').html('Training - please wait');
-        regressor.train((loss) => {
+        trainButton = createButton('Train');
+        select('#train').child(trainButton);
+        trainButton.mouseClicked(() => {
+            select('#info').html('Training - please wait');
 
-            // If the value is null, it means that training is complete
-            if (loss === null) {
-                console.log("Training done");
-                startPrediction();
+            // @Todo  Pause the video to canvas here.
+            // Perhaps try to set video = undefined?
+            // Or just stop calling the videoOut function in the draw loop?
+            // video.hide();
 
-                // Start game
-                changeState(1);
-            }
+            regressor.train((loss) => {
 
-            // Log the output value from training the model
-            // console.log(loss);
+                // If the value is null, it means that training is complete
+                if (loss === null) {
+                    console.log("Training done");
+                    startPrediction();
+
+                    // Start game
+                    changeState(1);
+                }
+
+                // Log the output value from training the model
+                // console.log(loss);
+            });
         });
-    });
+    }
+    CreateButtons();
 
     // Set curent gameState to training model
     changeState(0);
@@ -118,3 +129,9 @@ function startGame() {
 function endGame() {
     select('#info').html('Press space to restart');
 }
+
+Game.onTraining(showBtns);
+Game.onGamePlay(hideBtns);
+Game.onGamePlay(startGame);
+Game.onGameOver(hideBtns);
+Game.onGameOver(endGame);
