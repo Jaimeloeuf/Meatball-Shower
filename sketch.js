@@ -67,7 +67,7 @@ function setup() {
                     startPrediction();
 
                     // Start game
-                    changeState(1);
+                    Game.startGame();
                 }
 
                 // Log the output value from training the model
@@ -78,7 +78,7 @@ function setup() {
     CreateButtons();
 
     // Set curent gameState to training model
-    changeState(0);
+    Game.trainModel();
 }
 
 
@@ -95,8 +95,8 @@ function videoOut(video_input) {
 function keyPressed() {
     // The variable "key" is populated by p5.js to be the most recently typed key.
     // Run the game again, if game has ended and user pressed space bar to continue.
-    if (key === ' ' && gameState === 2)
-        changeState(1); // @Tmp  To start game
+    if (key === ' ' && Game.getState() === 'gameOver')
+        Game.startGame();
 }
 
 
