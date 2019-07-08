@@ -3,8 +3,6 @@ let video;
 let regressor;
 let currentPrediction = 0;
 
-let gameState = 0;
-
 // Buttons
 let leftButton, centerButton, rightButton, trainButton;
 
@@ -102,6 +100,15 @@ function keyPressed() {
 }
 
 
+/*  @Doc
+    Function to be called by p5.js library in a loop to update drawing
+    This will be used as the "game rendering" loop.
+    Mapped to the game controller's screen method, to draw the current screen.
+
+    var is used for auto hoisting just like a function.
+*/
+var draw = Game.draw;
+
 // Function to show all the buttons
 function showBtns() {
     select('#info').html('Add images you wish to correspond to relevant movements. Press train when done.');
@@ -131,7 +138,16 @@ function endGame() {
 }
 
 Game.onTraining(showBtns);
+Game.onTraining(function () {
+    Game.setScreenDrawer(() => videoOut(video));
+});
 Game.onGamePlay(hideBtns);
 Game.onGamePlay(startGame);
+Game.onGamePlay(function () {
+    Game.setScreenDrawer(() => gameLoop());
+});
 Game.onGameOver(hideBtns);
 Game.onGameOver(endGame);
+Game.onGameOver(function () {
+    Game.setScreenDrawer(() => gameOver());
+});
