@@ -58,24 +58,23 @@ function CreateButtons() {
 
     trainButton = createButton('Train');
     select('#train').child(trainButton);
-    trainButton.mouseClicked(() => {
-        // Change game state to "trainingModel" to pause video output and run functions to train the model
-        Game.trainModel();
+    // Attach Game controller's "trainModel" to the click of the "train" button
+    trainButton.mouseClicked(Game.trainModel);
+}
 
-        // @Todo  Refactor out code below.
-        select('#info').html('Training - please wait');
+function startTrainingModel() {
+    select('#info').html('Training - please wait');
 
-        regressor.train((loss) => {
-            // If the value is null, it means that training is complete
-            if (loss === null) {
-                console.log("Training done");
-                startPrediction();
+    regressor.train((loss) => {
+        // If the value is null, it means that training is complete
+        if (loss === null) {
+            console.log("Training done");
+            startPrediction();
 
-                // Start game
-                Game.startGame();
-            }
-            // console.log(loss); // Log the output value from training the model
-        });
+            // Start game
+            Game.startGame();
+        }
+        // console.log(loss); // Log the output value from training the model
     });
 }
 
@@ -145,6 +144,7 @@ Game.onTraining(hideBtns);
 Game.onTraining(function () {
     Game.setScreenDrawer(() => background(0)); // @Tmp  Show empty screen.
 });
+Game.onTraining(startTrainingModel);
 Game.onGamePlay(hideBtns);
 Game.onGamePlay(startGame);
 Game.onGamePlay(function () {
