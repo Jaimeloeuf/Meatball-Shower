@@ -27,7 +27,7 @@
 */
 
 const Game = (function () {
-    const eventBus = EventBus(["trainingModel", "gamePlay", "gameOver"]);
+    const eventBus = EventBus(["creatingControls", "trainingModel", "gamePlay", "gameOver"]);
 
     const states = eventBus.events
 
@@ -67,6 +67,7 @@ const Game = (function () {
         // Getter method, with a check to prevent accessing property of undefined.
         getState: () => (currentState) ? currentState.type : currentState,
         // Below are abbrevations / shorthand methods for setting/changing state
+        createControls: () => set(states.creatingControls),
         trainModel: () => set(states.trainingModel),
         startGame: () => set(states.gamePlay),
         endGame: () => set(states.gameOver),
@@ -74,6 +75,7 @@ const Game = (function () {
         onTraining: eventBus.on.trainingModel,
         onGamePlay: eventBus.on.gamePlay,
         onGameOver: eventBus.on.gameOver,
+        onCreateControls: eventBus.on.creatingControls,
         // Export the methods for drawing
         setScreenDrawer,
         draw
