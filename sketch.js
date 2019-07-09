@@ -29,6 +29,7 @@ function setup() {
     video.hide();
 
     // Load model and add video feed in
+    // @Todo  wait till mobile net is ready before allowing the training to begin. Show game loading before that.
     const mobileNet = ml5.featureExtractor('MobileNet', () => console.log('MobileNet ready'));
     regressor = mobileNet.regression(video, () => console.log('Model ready'));
 
@@ -52,15 +53,13 @@ function setup() {
         trainButton = createButton('Train');
         select('#train').child(trainButton);
         trainButton.mouseClicked(() => {
+            // Change game state to "trainingModel" to pause video output and run functions to train the model
+            Game.trainModel();
+
+            // @Todo  Refactor out code below.
             select('#info').html('Training - please wait');
 
-            // @Todo  Pause the video to canvas here.
-            // Perhaps try to set video = undefined?
-            // Or just stop calling the videoOut function in the draw loop?
-            // video.hide();
-
             regressor.train((loss) => {
-
                 // If the value is null, it means that training is complete
                 if (loss === null) {
                     console.log("Training done");
@@ -69,16 +68,14 @@ function setup() {
                     // Start game
                     Game.startGame();
                 }
-
-                // Log the output value from training the model
-                // console.log(loss);
+                // console.log(loss); // Log the output value from training the model
             });
         });
     }
     CreateButtons();
 
-    // Set curent gameState to training model
-    Game.trainModel();
+    // Set to createControls state to run draw function whilst pictures are taken to map to relevant controls
+    Game.createControls();
 }
 
 
@@ -137,9 +134,15 @@ function endGame() {
     select('#info').html('Press space to restart');
 }
 
-Game.onTraining(showBtns);
-Game.onTraining(function () {
+
+/* Attaching event handling functions for Game state changes onto the Game controller. */
+Game.onCreateControls(showBtns);
+Game.onCreateControls(function () {
     Game.setScreenDrawer(() => videoOut(video));
+});
+Game.onTraining(hideBtns);
+Game.onTraining(function () {
+    Game.setScreenDrawer(() => background(0)); // @Tmp  Show empty screen.
 });
 Game.onGamePlay(hideBtns);
 Game.onGamePlay(startGame);
