@@ -33,49 +33,50 @@ function setup() {
     const mobileNet = ml5.featureExtractor('MobileNet', () => console.log('MobileNet ready'));
     regressor = mobileNet.regression(video, () => console.log('Model ready'));
 
-
-    function CreateButtons() {
-        // Buttons
-        const buttonDiv = select('#buttons');
-
-        leftButton = createButton('Move left');
-        leftButton.parent(buttonDiv);
-        leftButton.mouseClicked(() => regressor.addImage(-1));
-
-        centerButton = createButton('No movement');
-        centerButton.parent(buttonDiv);
-        centerButton.mouseClicked(() => regressor.addImage(0));
-
-        rightButton = createButton('Move right');
-        rightButton.parent(buttonDiv);
-        rightButton.mouseClicked(() => regressor.addImage(1));
-
-        trainButton = createButton('Train');
-        select('#train').child(trainButton);
-        trainButton.mouseClicked(() => {
-            // Change game state to "trainingModel" to pause video output and run functions to train the model
-            Game.trainModel();
-
-            // @Todo  Refactor out code below.
-            select('#info').html('Training - please wait');
-
-            regressor.train((loss) => {
-                // If the value is null, it means that training is complete
-                if (loss === null) {
-                    console.log("Training done");
-                    startPrediction();
-
-                    // Start game
-                    Game.startGame();
-                }
-                // console.log(loss); // Log the output value from training the model
-            });
-        });
-    }
     CreateButtons();
 
     // Set to createControls state to run draw function whilst pictures are taken to map to relevant controls
     Game.createControls();
+}
+
+
+function CreateButtons() {
+    // Buttons
+    const buttonDiv = select('#buttons');
+
+    leftButton = createButton('Move left');
+    leftButton.parent(buttonDiv);
+    leftButton.mouseClicked(() => regressor.addImage(-1));
+
+    centerButton = createButton('No movement');
+    centerButton.parent(buttonDiv);
+    centerButton.mouseClicked(() => regressor.addImage(0));
+
+    rightButton = createButton('Move right');
+    rightButton.parent(buttonDiv);
+    rightButton.mouseClicked(() => regressor.addImage(1));
+
+    trainButton = createButton('Train');
+    select('#train').child(trainButton);
+    trainButton.mouseClicked(() => {
+        // Change game state to "trainingModel" to pause video output and run functions to train the model
+        Game.trainModel();
+
+        // @Todo  Refactor out code below.
+        select('#info').html('Training - please wait');
+
+        regressor.train((loss) => {
+            // If the value is null, it means that training is complete
+            if (loss === null) {
+                console.log("Training done");
+                startPrediction();
+
+                // Start game
+                Game.startGame();
+            }
+            // console.log(loss); // Log the output value from training the model
+        });
+    });
 }
 
 
