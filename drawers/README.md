@@ -5,3 +5,5 @@ Draw function of p5.js is called repeatedly, and will be used to re-draw/re-rend
 ## Modules
 - game.js
     - Draw function for drawing the graphics of the actual game.
+- gameOver.js
+    - Draw function for drawing the Game Over graphics when game has ended.
