@@ -3,9 +3,6 @@ let video;
 let regressor;
 let currentPrediction = 0;
 
-// Buttons
-let leftButton, centerButton, rightButton, trainButton;
-
 // Game variables
 let dodged;
 let hiScore = 0;
@@ -44,19 +41,19 @@ function CreateButtons() {
     // Buttons
     const buttonDiv = select('#buttons');
 
-    leftButton = createButton('Move left');
+    let leftButton = createButton('Move left');
     leftButton.parent(buttonDiv);
     leftButton.mouseClicked(() => regressor.addImage(-1));
 
-    centerButton = createButton('No movement');
+    let centerButton = createButton('No movement');
     centerButton.parent(buttonDiv);
     centerButton.mouseClicked(() => regressor.addImage(0));
 
-    rightButton = createButton('Move right');
+    let rightButton = createButton('Move right');
     rightButton.parent(buttonDiv);
     rightButton.mouseClicked(() => regressor.addImage(1));
 
-    trainButton = createButton('Train');
+    let trainButton = createButton('Train');
     select('#train').child(trainButton);
     // Attach Game controller's "trainModel" to the click of the "train" button
     trainButton.mouseClicked(Game.trainModel);
