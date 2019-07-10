@@ -17,8 +17,8 @@ function gameLoop() {
         meatball.show();
         meatball.update();
         if (collision_detector(meatball, sauce)) {
+            // End game with the controller and Return to Break out of loop
             Game.endGame();
-            // Return to Break out of the loop
             return;
         }
     });

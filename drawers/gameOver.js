@@ -22,5 +22,5 @@ function gameOver() {
     textSize(64);
     fill(255);
     stroke(0, 200, 0);
-    text('Game Over', width / 2, height / 2);
+    text('Sauced!', width / 2, height / 2);
 }
