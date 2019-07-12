@@ -105,3 +105,9 @@ class Star {
         }
     }
 }
+
+function makeStars() {
+    stars = [];
+    for (let i = 0; i < 250; i++)
+        stars.push(new Star());
+}
