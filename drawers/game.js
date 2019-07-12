@@ -11,10 +11,6 @@ function draw_game() {
         star.update();
     });
 
-    // Draw and update sauce
-    sauce.show();
-    sauce.update();
-
     // Draw and update meatballs
     meatballs.forEach((meatball) => {
         meatball.show();
@@ -26,6 +22,10 @@ function draw_game() {
         }
     });
 
+
+    // Draw and update sauce after meatballs to show it is own the meatball
+    sauce.show();
+    sauce.update();
 
     // @Todo  update and make the algorithm better. Perhaps refactor out, and change this so the level gets harder
     // Algorithm that determines how many meatballs are there at any given point
