@@ -1,9 +1,11 @@
+/*  @Doc
+    Drawing function for the pre game screen, when the training is complete but before the Game starts.
+*/
+
 // Game render loop function to show screen when the game is over.
-function gameOver() {
-
-    // @Todo  This can be done once don't need to repeat
+function draw_gameOver() {
     background(0);
-
+    
     // Draw and update stars
     stars.forEach((star) => {
         star.show();

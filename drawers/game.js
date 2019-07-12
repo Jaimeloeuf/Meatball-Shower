@@ -1,5 +1,8 @@
-function gameLoop() {
-    // @Todo  dont repeat
+/*  @Doc
+    Drawing function for the actual game play.
+*/
+
+function draw_game() {
     background(0);
 
     // Draw and update stars
