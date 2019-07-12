@@ -26,7 +26,6 @@ function setup() {
     video.hide();
 
     // Load model and add video feed in
-    // @Todo  wait till mobile net is ready before allowing the training to begin. Show game loading before that.
     const mobileNet = ml5.featureExtractor('MobileNet', () => console.log('MobileNet ready'));
     regressor = mobileNet.regression(video, () => console.log('Model ready'));
 
@@ -38,7 +37,6 @@ function setup() {
 
 
 function CreateButtons() {
-    // Buttons
     const buttonDiv = select('#buttons');
 
     let leftButton = createButton('Move left');
@@ -133,22 +131,15 @@ function endGame() {
 
 
 /* Attaching event handling functions for Game state changes onto the Game controller. */
+// Most of them is run their draw setup functions first and then attach their screen viewer.
 Game.onCreateControls(showBtns);
-Game.onCreateControls(function () {
-    Game.setScreenDrawer(() => videoOut(video));
-});
+Game.onCreateControls(() => Game.setScreenDrawer(() => videoOut(video)));
 Game.onTraining(hideBtns);
-Game.onTraining(function () {
-    Game.setScreenDrawer(() => background(0)); // @Tmp  Show empty screen.
-});
+Game.onTraining(() => Game.setScreenDrawer(draw_trainingModel));
 Game.onTraining(startTrainingModel);
 Game.onGamePlay(hideBtns);
 Game.onGamePlay(startGame);
-Game.onGamePlay(function () {
-    Game.setScreenDrawer(() => gameLoop());
-});
+Game.onGamePlay(() => Game.setScreenDrawer(() => gameLoop()));
 Game.onGameOver(hideBtns);
 Game.onGameOver(endGame);
-Game.onGameOver(function () {
-    Game.setScreenDrawer(() => gameOver());
-});
+Game.onGameOver(() => Game.setScreenDrawer(() => gameOver()));
