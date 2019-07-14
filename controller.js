@@ -76,6 +76,10 @@ const Game = (function () {
         onGamePlay: eventBus.on.gamePlay,
         onGameOver: eventBus.on.gameOver,
         onCreateControls: eventBus.on.creatingControls,
+        // Export methods for score keeping. Getters are just function wrapper over values.
+        getScore: () => currentScore,
+        getHighScore: () => highscore,
+        updateScore,
         // Export the methods for drawing
         setScreenDrawer,
         draw
