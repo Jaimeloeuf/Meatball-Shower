@@ -62,6 +62,27 @@ const Game = (function () {
         currentScreenDrawer();
     }
 
+    let currentScore = 0, highscore = 0;
+    function updateHighscore(score) {
+        if (score > highscore) {
+            highscore = score;
+            // Save to backend service asynchronously to prevent blocking the game.
+
+            // Return true to indicate high score is beaten and updated
+            return true;
+        }
+    }
+
+    function updateScore(score) {
+        // Update the current score
+        currentScore = score;
+
+        // Call update highscore too, to see if score beat highscore
+        if (updateHighscore(score)) {
+            // Call a congratulation drawer function or smth
+        }
+    }
+
     // Return the gameState object
     return Object.freeze({
         // Getter method, with a check to prevent accessing property of undefined.
