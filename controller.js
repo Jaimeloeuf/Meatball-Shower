@@ -54,10 +54,6 @@ const Game = (function () {
     // Function called repeatedly to draw screen on the canvas
     let currentScreenDrawer;
 
-    function setScreenDrawer(fn) {
-        currentScreenDrawer = fn;
-    }
-
     function draw() {
         currentScreenDrawer();
     }
@@ -101,8 +97,8 @@ const Game = (function () {
         getScore: () => currentScore,
         getHighScore: () => highscore,
         updateScore,
-        // Export the methods for drawing
-        setScreenDrawer,
+        // Export arrow function based currentScreenDrawer setter
+        setScreenDrawer: (fn) => currentScreenDrawer = fn,
         draw
     });
 })();
