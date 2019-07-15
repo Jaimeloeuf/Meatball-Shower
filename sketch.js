@@ -4,8 +4,6 @@ let regressor;
 let currentPrediction = 0;
 
 // Game variables
-let dodged;
-let hiScore = 0;
 let sauce, meatballs, stars;
 
 // Utility function binding
@@ -121,7 +119,7 @@ function startGame() {
     sauce = new Sauce();
     meatballs = [new Meatball()];
     makeStars();
-    select('#info').html('0 meatballs dodged. High score: ' + hiScore);
+    select('#info').html(`0 Meatballs dodged. High score: ${Game.getHighScore()}`);
 }
 
 // Function to game over screen
