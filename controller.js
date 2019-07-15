@@ -79,6 +79,11 @@ const Game = (function () {
         }
     }
 
+    // Function built on top of updateScore to increment score by 1
+    function incrementScore() {
+        updateScore(currentScore + 1);
+    }
+
     // Return the gameState object
     return Object.freeze({
         // Getter method, with a check to prevent accessing property of undefined.
@@ -97,6 +102,7 @@ const Game = (function () {
         getScore: () => currentScore,
         getHighScore: () => highscore,
         updateScore,
+        incrementScore,
         // Export arrow function based currentScreenDrawer setter
         setScreenDrawer: (fn) => currentScreenDrawer = fn,
         draw
