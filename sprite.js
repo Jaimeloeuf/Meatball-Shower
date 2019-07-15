@@ -57,13 +57,11 @@ class Meatball {
 
         // If the meatball has been dodged
         if (this.position.y > height + this.size) {
-            dodged += 1;
+            // Increment score by 1 as 1 more meatball is dodged.
+            Game.incrementScore();
 
-            // Set current score as new high score if it is higher than high score
-            if (dodged > hiScore)
-                hiScore = dodged;
             // Update the info bar
-            select('#info').html(`${dodged} Meatballs dodged. High score: ${hiScore}`);
+            select('#info').html(`${Game.getScore()} Meatballs dodged. High score: ${Game.getHighScore()}`);
 
             this.size = random(50, 120);
             this.position = createVector(random(this.size / 2, width - this.size / 2), -this.size);
