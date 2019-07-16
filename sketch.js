@@ -122,7 +122,7 @@ function endGame() {
 /* Attaching event handling functions for Game state changes onto the Game controller. */
 // Most of them is run their draw setup functions first and then attach their screen viewer.
 Game.onCreateControls(showBtns);
-Game.onCreateControls(() => Game.setScreenDrawer(draw_createControls));
+Game.onCreateControls(() => Game.setScreenDrawer(() => draw_createControls(video)));
 
 Game.onTraining(hideBtns);
 Game.onTraining(() => Game.setScreenDrawer(draw_trainingModel));
