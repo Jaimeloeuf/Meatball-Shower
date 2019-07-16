@@ -72,15 +72,6 @@ function startTrainingModel() {
 }
 
 
-// videoOut function takes a video input stream to output it onto the p5 canvas
-function videoOut(video_input) {
-    // Show mirror image of webcam
-    translate(width, 0);
-    scale(-1.0, 1.0);
-    image(video_input, 0, 0, width, height);
-}
-
-
 // Function to be called by the p5.js library when a key is pressed.
 function keyPressed() {
     // The variable "key" is populated by p5.js to be the most recently typed key.
@@ -131,13 +122,16 @@ function endGame() {
 /* Attaching event handling functions for Game state changes onto the Game controller. */
 // Most of them is run their draw setup functions first and then attach their screen viewer.
 Game.onCreateControls(showBtns);
-Game.onCreateControls(() => Game.setScreenDrawer(() => videoOut(video)));
+Game.onCreateControls(() => Game.setScreenDrawer(draw_createControls));
+
 Game.onTraining(hideBtns);
 Game.onTraining(() => Game.setScreenDrawer(draw_trainingModel));
 Game.onTraining(startTrainingModel);
+
 Game.onGamePlay(hideBtns);
 Game.onGamePlay(startGame);
 Game.onGamePlay(() => Game.setScreenDrawer(draw_game));
+
 Game.onGameOver(hideBtns);
 Game.onGameOver(endGame);
 Game.onGameOver(() => Game.setScreenDrawer(draw_gameOver));
