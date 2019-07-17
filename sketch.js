@@ -9,6 +9,7 @@ let sauce, meatballs, stars;
 // Utility function binding
 const print = console.log;
 
+// Setup function ran by p5.js before draw function is ran.
 function setup() {
     // Create a p5.js canvas and inject it into the canvas container in the HTML
     // @Todo  Update the canvas size to be dynamic and injected externally
@@ -58,17 +59,23 @@ function CreateButtons() {
 function startTrainingModel() {
     select('#info').html('Training - please wait');
 
-    regressor.train((loss) => {
-        // If the value is null, it means that training is complete
+    function waitTillComplete(loss) {
+        // Training is complete if loss is null
         if (loss === null) {
+            // @Debug
             console.log("Training done");
+
+            // Start prediction loop
             startPrediction();
 
             // Start game
             Game.startGame();
         }
-        // console.log(loss); // Log the output value from training the model
-    });
+        // @Debug  Log the output value from training the model
+        // console.log(loss);
+    }
+
+    regressor.train(waitTillComplete);
 }
 
 
