@@ -8,5 +8,9 @@ function draw_createControls(video_input) {
     // Show mirror image of webcam
     translate(width, 0);
     scale(-1.0, 1.0);
+
+    // Draw image following dimension of the canvas
     image(video_input, 0, 0, width, height);
+    // Draw image by the image dimension
+    // image(video_input, 0, 0);
 }

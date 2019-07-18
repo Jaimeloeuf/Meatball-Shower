@@ -24,6 +24,9 @@
     - set a new state
     - add a event handler for a change of state.
     - ? remove a event handler previously added
+
+    @Todo
+    - Built the data service that connects with the backend service into the Game controller too.
 */
 
 const Game = (function () {

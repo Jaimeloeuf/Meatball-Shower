@@ -56,6 +56,19 @@ function CreateButtons() {
     trainButton.mouseClicked(Game.trainModel);
 }
 
+// @Todo  fix the shit below
+// function CreateButtons_Others() {
+//     const buttonDiv = select('#buttons');
+
+//     let pause = createButton('Pause');
+//     pause.parent(buttonDiv);
+//     pause.mouseClicked(() => loopPause ...);
+
+//     let quit = createButton('Quit');
+//     quit.parent(buttonDiv);
+//     quit.mouseClicked(() => );
+// }
+
 function startTrainingModel() {
     select('#info').html('Training - please wait');
 
