@@ -135,7 +135,7 @@ function startGame() {
 
 // Function to game over screen
 function endGame() {
-    select('#info').html('Press space to restart');
+    select('#info').html(`${Game.getScore()} Meatballs dodged. High score: ${Game.getHighScore()}`);
 }
 
 
