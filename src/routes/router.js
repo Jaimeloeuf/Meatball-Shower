@@ -9,8 +9,11 @@ import firebase from 'firebase';
 
 
 // Import routes
-import privateRoutes from './private';
+// import privateRoutes from './private';
 import publicRoutes from './public';
+
+// Import components
+import Home from '../views/Home.vue';
 
 // Import AuthType Enum
 import AuthType from './AuthType';
@@ -23,12 +26,12 @@ Vue.use(Router);
 const router = new Router({
     routes: [
         {
-            // Set about view as default view
+            // Set Home view as default view
             path: '/',
-            redirect: '/about'
+            component: Home
         },
         ...publicRoutes,
-        ...privateRoutes
+        // ...privateRoutes
     ]
 });
 
